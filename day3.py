@@ -69,3 +69,25 @@ def part2(lines, k=12):
 
 print("-------------------Part 2-------------------")
 print(part2(line))
+
+
+# -------------------Part 2 optimized using stack-------------------
+def part2_optimized(lines, k=12):
+    total = 0
+
+    for line in lines:
+        n = len(line)
+        stack = []
+        for i, digit_char in enumerate(line):
+            digit = int(digit_char)
+            # While stack not empty, current digit bigger, and enough digits left
+            while stack and digit > stack[-1] and len(stack) + (n - i) > k:
+                stack.pop()
+            if len(stack) < k:
+                stack.append(digit)
+        # Form number
+        total += int("".join(map(str, stack[:k])))
+    return total
+
+print("-------------------Part 2 optimized-------------------")
+print(part2_optimized(line))
