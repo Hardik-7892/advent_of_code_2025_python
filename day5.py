@@ -64,7 +64,35 @@ def range_sorting_approach(fresh_ranges, available_ids):
     return fresh_count
 
 print("-------------------Part 1 approach 2-------------------")
-print("Rage sorting approach count:", range_sorting_approach(fresh_ranges, available_ids))
-
+print("Range sorting approach count:", range_sorting_approach(fresh_ranges, available_ids))
 
 # -------------------Part 2-------------------
+def merge_ranges(ranges):
+    """Merge overlapping or adjacent ranges."""
+    # Sort ranges by start
+    ranges.sort(key=lambda x: x[0])
+    merged = []
+
+    for start, end in ranges:
+        if not merged:
+            merged.append([start, end])
+        else:
+            last = merged[-1]
+            if start <= last[1] + 1:  # overlap or adjacent
+                last[1] = max(last[1], end)
+            else:
+                merged.append([start, end])
+    return merged
+
+def count_all_fresh_ids(fresh_ranges):
+    """Count all ingredient IDs considered fresh by the ranges."""
+    merged = merge_ranges(fresh_ranges)
+    total_fresh = 0
+    for start, end in merged:
+        total_fresh += end - start + 1  # inclusive count
+    return total_fresh
+
+# fresh_ranges, _ = read_input("inputs/input_day_5.txt")
+
+print("-------------------Part 2-------------------")
+print("Total fresh IDs:", count_all_fresh_ids(fresh_ranges))
