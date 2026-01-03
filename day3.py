@@ -41,3 +41,31 @@ def read_input(filename):
 line = read_input("inputs/input_day_3.txt")
 print("-------------------Part 1-------------------")
 print(part1(line))
+
+
+def part2(lines, k=12):
+    """
+    Creating that helper function payed off, reusing it in part 2
+    Generalized Part 2: pick k digits per bank to form the largest number.
+    """
+    total_joltage = 0
+
+    for line in lines:
+        n = len(line)
+        start = 0
+        selected_digits = []
+
+        for remaining in range(k, 0, -1):
+            # End index: last position we can pick this digit so enough remain
+            end = n - remaining + 1
+            max_digit, pos = max_in_range(line, start, end)
+            selected_digits.append(str(max_digit))
+            start = pos + 1  # next search starts after the picked digit
+
+        # Combine selected digits to form the number
+        total_joltage += int("".join(selected_digits))
+
+    return total_joltage
+
+print("-------------------Part 2-------------------")
+print(part2(line))
